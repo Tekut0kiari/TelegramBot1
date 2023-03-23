@@ -1,4 +1,3 @@
-import self as self
 import telebot
 import random
 import sqlite3
@@ -49,12 +48,6 @@ def get_random_action():
     cursor.execute('SELECT * FROM actions ORDER BY RANDOM() LIMIT 1')
     action = cursor.fetchone()
     return action[1]
-
-def get_random_random():
-    cursor.execute('SELECT * FROM questions_actions ORDER BY RANDOM() LIMIT 1')
-    question = cursor.fetchone()
-    action = cursor.fetchone()
-    return random[1]
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
