@@ -148,13 +148,12 @@ def send_welcome(message):
 
 @bot.message_handler(commands=['game'])
 def game(message):
-    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
     truth_button = KeyboardButton('Правда')
     action_button = KeyboardButton('Действие')
-    random_button = KeyboardButton('Случайно')
+    random_button = KeyboardButton('Рандом')
     markup.add(truth_button, action_button, random_button)
     bot.send_message(message.chat.id, "Выбери категорию:", reply_markup=markup)
-
 
 @bot.message_handler(func=lambda message: True)
 def process_game(message):
@@ -177,7 +176,6 @@ def process_game(message):
         # Сбрасываем счетчик нажатий на кнопку "Правда"
         truth_button_count = 0
 
-
 def get_random_question():
     cursor.execute('SELECT * FROM questions ORDER BY RANDOM() LIMIT 1')
     question = cursor.fetchone()
@@ -198,7 +196,7 @@ def process_game(message):
     elif message.text == 'Действие':
         action = get_random_action()
         bot.send_message(message.chat.id, "Действие: " + action)
-    elif message.text == 'Случайно':
+    elif message.text == 'Рандом':
         # Используем модуль random для выбора случайно либо правды, либо действия
         option = random.choice(['truth', 'action'])
         if option == 'truth':
@@ -207,6 +205,5 @@ def process_game(message):
         elif option == 'action':
             action = get_random_action()
             bot.send_message(message.chat.id, "Действие: " + action)
-
 
 bot.polling()
